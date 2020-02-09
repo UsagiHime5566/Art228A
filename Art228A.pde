@@ -1,37 +1,45 @@
 import processing.video.*;
 
-Movie myMovie;
+Movie movieLoop;
+Movie movieMain;
 
-
+int stats;
 
 void setup() {
   size(450, 800);
-  myMovie = new Movie(this, "film.mp4") {
+  movieLoop = new Movie(this, "aaa.mp4");
+  movieMain = new Movie(this, "bbb.mp4") {
     @ Override public void eosEvent() {
       super.eosEvent();
       myEoS();
     }
   };
-  myMovie.play();
-  print("begin- ");
+  
+  movieLoop.loop();
+  stats = 0;
 }
 
 void myEoS(){
-  print("end");
+  stats = 0;
+  movieMain.jump(0);
+  movieMain.stop();
 }
 
 void draw() {
-  image(myMovie, 0, 0, width, height);
+  if(stats == 0)
+    image(movieLoop, 0, 0, width, height);
+  if(stats == 1)
+    image(movieMain, 0, 0, width, height);
 }
 
 void movieEvent(Movie m) {
-  if (m == myMovie) {
-    myMovie.read();
-  } //else if (m == yourMovie) {
-    //yourMovie.read();
-  //}
+  if(stats == 0 && m == movieLoop)
+    m.read();
+  if(stats == 1 && m == movieMain)
+    m.read();
 }
 
 void mousePressed() {
-  myMovie.stop();
+  stats = 1;
+  movieMain.play();
 }
