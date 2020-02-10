@@ -7,11 +7,12 @@ int stats;
 
 void setup() {
   //size(1920, 1080);
+  
   fullScreen();
   background(0);
   
-  movieLoop = new Movie(this, "aaa.mp4");
-  movieMain = new Movie(this, "bbb.mp4") {
+  movieLoop = new Movie(this, "aaa_90.mp4");
+  movieMain = new Movie(this, "bbb_90.mp4") {
     @ Override public void eosEvent() {
       super.eosEvent();
       myEoS();
@@ -29,13 +30,12 @@ void myEoS(){
 }
 
 void draw() {
-  translate(0, height);  
-  rotate(-PI/2);  
-  
-  if(stats == 0)
-    image(movieLoop, 0, 0, height, width);
-  if(stats == 1)
-    image(movieMain, 0, 0, height, width);
+  if(stats == 0 && movieLoop.width == 1920)
+    //image(movieLoop, 0, 0, width, height);
+    background(movieLoop);
+  if(stats == 1 && movieMain.width == 1920)
+    //image(movieMain, 0, 0, width, height);
+    background(movieMain);
 }
 
 void movieEvent(Movie m) {
